@@ -4,6 +4,8 @@ An alternative to the juicefs docker volume driver.
 
 ## Usage
 
+### Plain docker
+
 ```sh
 docker run                                          \
     --detach                                        \
@@ -21,7 +23,10 @@ docker run                                          \
     docker.io/altaris/juicefs-docker
 ```
 
-or using `docker-compose`:
+The folder `path/to/cert/dir` must contain `myjuicefs.pem` inside (of more
+generally, `<FS_NAME>.pem`).
+
+### `docker-compose`
 
 ```yml
 volumes:
@@ -63,3 +68,21 @@ services:
         bind:
           propagation: shared
 ```
+
+## Generate a RSA key
+
+ezpz
+
+```sh
+PASSWORD=$(openssl rand -base64 32)
+echo $PASSWORD  # Don't loose it ;)
+openssl genrsa -out key.pem -aes256 -passout "pass:$PASSWORD" 2048
+```
+
+You can also just run
+
+```sh
+openssl genrsa -out key.pem -aes256 2048
+```
+
+and set the password manually.
